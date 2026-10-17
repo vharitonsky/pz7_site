@@ -1,0 +1,42 @@
+{
+  "scanner": "SynthDAST",
+  "target": "shop.example.com",
+  "variant": "user1075",
+  "findings": [
+    {
+      "id": 1582,
+      "type": "SQL injection",
+      "url": "https://shop.example.com/products?category=",
+      "severity": "High",
+      "confidence": "Certain"
+    },
+    {
+      "id": 1584,
+      "type": "XSS",
+      "url": "https://shop.example.com/about",
+      "severity": "Medium",
+      "confidence": "Tentative"
+    },
+    {
+      "id": 1581,
+      "type": "OS command injection",
+      "url": "https://shop.example.com/stock",
+      "severity": "Critical",
+      "confidence": "Firm"
+    },
+    {
+      "id": 1585,
+      "type": "SQL injection",
+      "url": "https://shop.example.com/catalog",
+      "severity": "High",
+      "confidence": "Firm"
+    },
+    {
+      "id": 1583,
+      "type": "Stored XSS",
+      "url": "https://shop.example.com/product/review",
+      "severity": "High",
+      "confidence": "Firm"
+    }
+  ]
+}

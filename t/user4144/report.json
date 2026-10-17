@@ -1,0 +1,28 @@
+{
+  "scanner": "SynthDAST",
+  "target": "shop.example.com",
+  "variant": "user4144",
+  "findings": [
+    {
+      "id": 1880,
+      "type": "SQL injection",
+      "url": "https://shop.example.com/products?category=",
+      "severity": "High",
+      "confidence": "Certain"
+    },
+    {
+      "id": 1881,
+      "type": "Stored XSS",
+      "url": "https://shop.example.com/product/review",
+      "severity": "High",
+      "confidence": "Firm"
+    },
+    {
+      "id": 1882,
+      "type": "XSS",
+      "url": "https://shop.example.com/about",
+      "severity": "Medium",
+      "confidence": "Tentative"
+    }
+  ]
+}

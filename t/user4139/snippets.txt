@@ -1,0 +1,18 @@
+# Варіант user4139. Фрагменти серверного коду для AI-рев'ю (клас вразливості НЕ підписано)
+# Що і як робити — див. інструкцію на сторінці завдання.
+
+## Фрагмент 1
+app.get('/products', (req,res)=>{
+  const q="SELECT * FROM products WHERE category='"+req.query.category+"'";
+  db.query(q).then(r=>res.json(r));
+});
+
+## Фрагмент 2
+app.post('/stock', (req,res)=>{
+  exec(`check_stock ${req.body.storeId}`, (e,out)=>res.send(out));
+});
+
+## Фрагмент 3
+app.get('/search', (req,res)=>{
+  res.send(`<h1>Результати: ${req.query.q}</h1>`);
+});

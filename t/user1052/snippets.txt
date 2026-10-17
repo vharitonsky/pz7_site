@@ -1,0 +1,17 @@
+# Варіант user1052. Фрагменти серверного коду для AI-рев'ю (клас вразливості НЕ підписано)
+# Що і як робити — див. інструкцію на сторінці завдання.
+
+## Фрагмент 1
+app.post('/stock', (req,res)=>{
+  exec(`check_stock ${req.body.storeId}`, (e,out)=>res.send(out));
+});
+
+## Фрагмент 2
+app.get('/search', (req,res)=>{
+  res.send(`<h1>Результати: ${req.query.q}</h1>`);
+});
+
+## Фрагмент 3
+app.get('/download', (req,res)=>{
+  res.sendFile('/var/files/'+req.query.name);
+});

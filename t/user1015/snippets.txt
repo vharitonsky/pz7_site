@@ -1,0 +1,18 @@
+# Варіант user1015. Фрагменти серверного коду для AI-рев'ю (клас вразливості НЕ підписано)
+# Що і як робити — див. інструкцію на сторінці завдання.
+
+## Фрагмент 1
+app.get('/search', (req,res)=>{
+  res.send(`<h1>Результати: ${req.query.q}</h1>`);
+});
+
+## Фрагмент 2
+app.get('/download', (req,res)=>{
+  res.sendFile('/var/files/'+req.query.name);
+});
+
+## Фрагмент 3
+app.get('/products', (req,res)=>{
+  const q="SELECT * FROM products WHERE category='"+req.query.category+"'";
+  db.query(q).then(r=>res.json(r));
+});

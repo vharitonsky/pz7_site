@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Практична 7 — персональне завдання</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#15181d; --muted:#5a6472;
+    --line:#e3e7ec; --accent:#0563bb; --code:#0b7a33; --warn:#9a3b1b;
+    --ok:#0b7a33; --chip:#eef2f7;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --bg:#0f1216; --card:#171b21; --ink:#e7ebf0; --muted:#9aa5b1;
+    --line:#2a313a; --accent:#5aa2e8; --code:#5bd18a; --warn:#e2975f;
+    --ok:#5bd18a; --chip:#222832;
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0f1216; --card:#171b21; --ink:#e7ebf0; --muted:#9aa5b1;
+    --line:#2a313a; --accent:#5aa2e8; --code:#5bd18a; --warn:#e2975f;
+    --ok:#5bd18a; --chip:#222832;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+  .wrap{max-width:900px;margin:0 auto;padding:32px 16px 64px}
+  h1{font-size:1.6rem;margin:0 0 4px}
+  .sub{color:var(--muted);margin:0 0 24px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:20px;margin:16px 0}
+  label{display:block;font-weight:600;margin-bottom:8px}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  input[type=text],textarea{font-size:1rem;padding:9px 11px;border:1px solid var(--line);
+    border-radius:8px;background:var(--bg);color:var(--ink);width:100%}
+  textarea{min-height:64px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9rem}
+  #num{flex:1;min-width:160px;font-size:1.1rem}
+  button{font-size:1rem;font-weight:600;padding:10px 18px;border:0;border-radius:8px;
+    background:var(--accent);color:#fff;cursor:pointer}
+  button.ghost{background:var(--chip);color:var(--ink);border:1px solid var(--line)}
+  button:disabled{opacity:.5;cursor:default}
+  .msg{margin-top:12px;color:var(--warn);font-weight:600;min-height:1.2em}
+  .hint{color:var(--muted);font-size:.9rem;margin-top:8px}
+  h2{font-size:1.15rem;margin:24px 0 8px}
+  h3{font-size:1rem;margin:18px 0 6px}
+  table{width:100%;border-collapse:collapse;font-size:.95rem}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--muted);font-weight:600}
+  td.url{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.82rem;word-break:break-all}
+  .conf-Tentative{color:var(--warn)}
+  .verdict{white-space:nowrap}
+  .verdict label{display:inline-flex;align-items:center;gap:4px;font-weight:400;
+    margin:0 10px 0 0;cursor:pointer}
+  .fncell{text-align:center;white-space:nowrap}
+  pre{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:14px;
+    overflow:auto;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem;
+    color:var(--code);line-height:1.6}
+  ol.steps{margin:8px 0 0;padding-left:22px}
+  ol.steps>li{margin:10px 0}
+  ul{padding-left:22px}
+  .ex{background:var(--bg);border:1px solid var(--line);border-left:3px solid var(--accent);
+    border-radius:8px;padding:12px 14px;margin:10px 0}
+  .ex b{color:var(--ink)}
+  .ex pre{margin:8px 0 4px}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88em;
+    background:var(--chip);padding:1px 5px;border-radius:4px}
+  .tools{display:flex;gap:10px;flex-wrap:wrap;margin:4px 0 14px}
+  .frag{margin:14px 0}
+  .hidden{display:none}
+  footer{color:var(--muted);font-size:.85rem;margin-top:32px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Практична 7 — персональне завдання</h1>
+  <p class="sub">Автоматизований та AI-асистований пошук вразливостей. Введіть свій
+    user-id зі списку групи, виконайте завдання прямо на сторінці та завантажте
+    відповіді у файл для здачі.</p>
+
+  <div class="card">
+    <label for="num">Ваш ідентифікатор (user-id)</label>
+    <div class="row">
+      <input id="num" type="text" inputmode="text" placeholder="напр. user1288"
+        autocomplete="off" spellcheck="false">
+      <button id="go">Отримати завдання</button>
+    </div>
+    <div id="msg" class="msg"></div>
+    <div id="hint" class="hint"></div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0">Що і як робити</h2>
+    <p class="hint">Інструкція однакова для всіх. Персональні дані з'являться нижче
+      після вводу user-id. Живого сервера немає — усе робиться міркуванням по даних.</p>
+    <ol class="steps">
+      <li><b>Тріаж звіту DAST.</b> <code>Звіт</code> — це список підозр сканера. Для
+        кожної знахідки позначте <b>Справжня (TP)</b> чи <b>Хибна (FP)</b>.
+        <br>FP — коли вразливість <i>неможлива</i> на цьому ендпоінті (нема параметра,
+        куди інжектити; або нема дії/зміни стану), чи <code>confidence = Tentative</code>.
+        Звіряйте знахідку з <b>картою застосунку</b> нижче.</li>
+      <li><b>False negative.</b> У карті застосунку позначте ендпоінти, що <b>мають
+        реальну вразливість, якої НЕМА у звіті</b> — сканер їх проґавив (FN — найгірший
+        випадок: тихо пропущена діра).</li>
+      <li><b>AI-код-рев'ю.</b> Для кожного фрагмента визначте клас вразливості (можна за
+        допомогою AI — Gemini / ChatGPT / Claude, <b>без підказки класу</b>) і впишіть його
+        в поле.</li>
+      <li><b>Обхід payload-а.</b> За заданим фільтром напишіть у поле <b>змінений
+        payload</b>, що обходить фільтр, і коротко <b>поясніть механізм</b> — чому саме цей
+        варіант фільтр не ріже.</li>
+      <li><b>Здача.</b> Натисніть <b>«Завантажити відповіді (JSON)»</b> і прикріпіть файл
+        у Moodle-завдання. Самоперевірки тут немає — оцінює викладач.</li>
+    </ol>
+
+    <h2>Приклад (на сторонніх даних — не з вашого варіанту)</h2>
+    <div class="ex"><b>Тріаж:</b> <code>SQL injection — /news (Firm)</code>. На
+      <code>/news</code> нема вхідного параметра → інжектити нема куди → <b>Хибна (FP)</b>.</div>
+    <div class="ex"><b>False negative:</b> у карті є <code>/upload</code> — «приймає файл
+      без перевірки типу», але у звіті його немає → це <b>пропущена вразливість (FN)</b>,
+      позначаємо.</div>
+    <div class="ex"><b>Код-рев'ю, приклад фрагмента</b> (іншого класу, ніж у вашому наборі):
+      <pre>app.get('/go', (req, res) =&gt; {    // ендпоінт переходу
+  res.redirect(req.query.url);     // url не перевіряється
+});</pre>
+      Промпт до AI: «Назви клас, вразливий рядок, механізм і payload. Не вигадуй зайвого.»
+      Клас: <b>Open redirect</b>.</div>
+  </div>
+
+  <div id="result" class="hidden">
+    <div class="card">
+      <div class="tools">
+        <button class="ghost" id="dlAll">⬇ Завантажити відповіді (JSON)</button>
+      </div>
+      <h2 style="margin-top:0">Завдання — variant <span id="vnum"></span></h2>
+
+      <h3>Крок 1. Тріаж звіту DAST — позначте TP / FP</h3>
+      <p class="hint">Для кожної знахідки: <b>Справжня (TP)</b> чи <b>Хибна (FP)</b>.
+        Звіряйте з картою застосунку нижче.</p>
+      <table id="findings">
+        <thead><tr><th>Клас</th><th>URL</th><th>Sev.</th><th>Conf.</th>
+          <th>Ваш вердикт</th></tr></thead>
+        <tbody></tbody>
+      </table>
+
+      <h3>Карта застосунку — позначте FALSE NEGATIVE</h3>
+      <p class="hint">Відмітьте ендпоінти, що <b>вразливі, але відсутні у звіті</b> вище
+        (сканер проґавив).</p>
+      <table id="surface">
+        <thead><tr><th>URL</th><th>Що робить ендпоінт</th>
+          <th class="fncell">Пропущена (FN)</th></tr></thead>
+        <tbody></tbody>
+      </table>
+
+      <h3>Крок 2. AI-код-рев'ю — визначте клас кожного фрагмента</h3>
+      <div id="snips"></div>
+
+      <h3>Крок 3. Обхід payload-а</h3>
+      <div id="payload"></div>
+
+      <div class="tools" style="margin-top:18px">
+        <button id="dlAll2">⬇ Завантажити відповіді (JSON)</button>
+      </div>
+      <div id="savemsg" class="hint"></div>
+    </div>
+  </div>
+
+  <footer>
+    У запити до AI-асистента передавайте лише цей синтетичний код — жодних реальних
+    систем чи персональних даних. Файл відповідей має містити ваш user-id.
+  </footer>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+let current = null; // { id, meta, findings, snippetCount }
+
+function esc(s){ return s.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+
+function parseSnippets(text){
+  // розбиваємо snippets.txt на фрагменти за «## Фрагмент N»
+  const parts = text.split(/^##\s*Фрагмент\s*\d+\s*$/m).slice(1);
+  return parts.map(p => p.trim()).filter(Boolean);
+}
+
+async function loadVariant(id){
+  $("msg").textContent = "";
+  const base = `t/${id}/`;
+  let rep, surf, meta, snipText;
+  try {
+    const [a,b,c,d] = await Promise.all([
+      fetch(base+"report.json",{cache:"no-store"}),
+      fetch(base+"surface.json",{cache:"no-store"}),
+      fetch(base+"meta.json",{cache:"no-store"}),
+      fetch(base+"snippets.txt",{cache:"no-store"}),
+    ]);
+    if(!a.ok||!b.ok||!c.ok||!d.ok) throw 0;
+    rep = await a.json(); surf = await b.json();
+    meta = await c.json(); snipText = await d.text();
+  } catch(e){
+    $("result").classList.add("hidden");
+    $("msg").textContent = "Набору з таким user-id немає — перевірте id зі списку.";
+    return;
+  }
+
+  $("vnum").textContent = rep.variant ?? id;
+
+  // Крок 1: знахідки + радіо TP/FP
+  const ftb = $("findings").querySelector("tbody"); ftb.innerHTML = "";
+  rep.findings.forEach(f => {
+    const tr = document.createElement("tr");
+    tr.innerHTML =
+      `<td>${esc(f.type)}</td><td class="url">${esc(f.url)}</td>`+
+      `<td>${esc(f.severity)}</td>`+
+      `<td class="conf-${esc(f.confidence)}">${esc(f.confidence)}</td>`+
+      `<td class="verdict">`+
+        `<label><input type="radio" name="tr_${f.id}" value="TP"> TP</label>`+
+        `<label><input type="radio" name="tr_${f.id}" value="FP"> FP</label>`+
+      `</td>`;
+    ftb.appendChild(tr);
+  });
+
+  // Карта застосунку: чекбокс FN
+  const stb = $("surface").querySelector("tbody"); stb.innerHTML = "";
+  surf.endpoints.forEach(e => {
+    const tr = document.createElement("tr");
+    tr.innerHTML =
+      `<td class="url">${esc(e.url)}</td><td>${esc(e.desc)}</td>`+
+      `<td class="fncell"><input type="checkbox" class="fn" data-url="${esc(e.url)}"></td>`;
+    stb.appendChild(tr);
+  });
+
+  // Крок 2: фрагменти + поле класу
+  const frags = parseSnippets(snipText);
+  current = { id, meta, findings: rep.findings, snippetCount: frags.length };
+  const sd = $("snips"); sd.innerHTML = "";
+  frags.forEach((code, i) => {
+    const div = document.createElement("div");
+    div.className = "frag";
+    div.innerHTML =
+      `<b>Фрагмент ${i+1}</b><pre>${esc(code)}</pre>`+
+      `<label for="sn_${i+1}">Визначений клас вразливості:</label>`+
+      `<input type="text" id="sn_${i+1}" placeholder="напр. SQL injection">`;
+    sd.appendChild(div);
+  });
+
+  // Крок 3: сценарій payload-а + поле
+  const p = meta.payload;
+  $("payload").innerHTML =
+    `<p>Клас: <b>${esc(p.class)}</b>. Обмеження: <b>${esc(p.filter)}</b>.</p>`+
+    `<p class="hint">Приклад payload-а, який блокується фільтром:</p>`+
+    `<pre>${esc(p.example)}</pre>`+
+    (p.hint ? `<p class="hint">Підказка: ${esc(p.hint)}</p>` : ``)+
+    `<label for="pl">Ваш змінений payload (що обходить фільтр):</label>`+
+    `<textarea id="pl" placeholder="впишіть payload, що обходить фільтр"></textarea>`+
+    `<label for="pl_why">Чому цей варіант обходить фільтр (механізм):</label>`+
+    `<textarea id="pl_why" placeholder="напр.: фільтр ріже слово script, а подія onerror виконує JS без тега script"></textarea>`;
+
+  $("result").classList.remove("hidden");
+  $("savemsg").textContent = "";
+  try { localStorage.setItem("pz7_id", id); } catch(e){}
+}
+
+function collectAnswers(){
+  const triage = {};
+  let unanswered = 0;
+  current.findings.forEach(f => {
+    const sel = document.querySelector(`input[name="tr_${f.id}"]:checked`);
+    if(sel) triage[f.id] = sel.value; else unanswered++;
+  });
+  const fn = [...document.querySelectorAll(".fn:checked")].map(c => c.dataset.url);
+  const snippets = {};
+  for(let i=1;i<=current.snippetCount;i++){
+    snippets[i] = ($("sn_"+i)?.value || "").trim();
+  }
+  return {
+    variant: current.id,
+    submitted_at: new Date().toISOString(),
+    triage, fn_marked: fn, snippets,
+    payload: ($("pl")?.value || "").trim(),
+    payload_why: ($("pl_why")?.value || "").trim(),
+    _unanswered_triage: unanswered,
+  };
+}
+
+function exportJson(){
+  if(!current) return;
+  const ans = collectAnswers();
+  const warnUn = ans._unanswered_triage;
+  delete ans._unanswered_triage;
+  const blob = new Blob([JSON.stringify(ans, null, 2)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `pz7_${current.id}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  $("savemsg").textContent = warnUn
+    ? `Файл збережено. Увага: ${warnUn} знахідок без вердикту — можна дозаповнити й завантажити ще раз.`
+    : "Файл збережено. Прикріпіть його у Moodle-завдання.";
+}
+
+$("go").addEventListener("click", () => {
+  const id = $("num").value.trim();
+  if(!id){ $("msg").textContent = "Введіть свій user-id."; return; }
+  loadVariant(encodeURIComponent(id));
+});
+$("num").addEventListener("keydown", e => { if(e.key==="Enter") $("go").click(); });
+$("dlAll").addEventListener("click", exportJson);
+$("dlAll2").addEventListener("click", exportJson);
+
+(async () => {
+  try {
+    const r = await fetch("t/index.json",{cache:"no-store"});
+    if(r.ok){
+      const list = await r.json();
+      if(list.length) $("hint").textContent =
+        `Доступно варіантів: ${list.length}. Ваш user-id — зі списку групи.`;
+    }
+  } catch(e){}
+  try { const last = localStorage.getItem("pz7_id"); if(last) $("num").value = last; } catch(e){}
+})();
+</script>
+</body>
+</html>

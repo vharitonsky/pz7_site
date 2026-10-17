@@ -1,0 +1,9 @@
+{
+  "variant": "user1018",
+  "payload": {
+    "class": "XSS",
+    "filter": "фільтр вирізає слово «script»",
+    "example": "<script>alert(1)</script>",
+    "hint": "подумайте про події (onerror / onload) замість тега <script>"
+  }
+}

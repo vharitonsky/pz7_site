@@ -1,0 +1,9 @@
+{
+  "variant": "user4167",
+  "payload": {
+    "class": "SQL injection",
+    "filter": "фільтр вирізає пробіли",
+    "example": "' OR 1=1-- -",
+    "hint": "пробіл можна замінити коментарем /**/"
+  }
+}

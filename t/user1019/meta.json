@@ -1,0 +1,9 @@
+{
+  "variant": "user1019",
+  "payload": {
+    "class": "SQL injection",
+    "filter": "фільтр блокує слово «OR»",
+    "example": "' OR 1=1-- -",
+    "hint": "істинну умову можна виразити й без OR"
+  }
+}

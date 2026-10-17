@@ -1,0 +1,41 @@
+{
+  "variant": "user4135",
+  "endpoints": [
+    {
+      "url": "https://shop.example.com/help",
+      "desc": "довідковий розділ, статичний текст"
+    },
+    {
+      "url": "https://shop.example.com/stock",
+      "desc": "перевіряє наявність, підставляючи storeId у команду ОС"
+    },
+    {
+      "url": "https://shop.example.com/products?category=",
+      "desc": "будує SQL-запит, підставляючи параметр category"
+    },
+    {
+      "url": "https://shop.example.com/product/review",
+      "desc": "зберігає відгук і показує його всім відвідувачам"
+    },
+    {
+      "url": "https://shop.example.com/assets/app.js",
+      "desc": "статичний JS-файл інтерфейсу"
+    },
+    {
+      "url": "https://shop.example.com/contact",
+      "desc": "статична контактна інформація"
+    },
+    {
+      "url": "https://shop.example.com/search?q=",
+      "desc": "показує пошуковий запит q на сторінці без екранування"
+    },
+    {
+      "url": "https://shop.example.com/login?returnUrl=",
+      "desc": "після входу перенаправляє на returnUrl без перевірки"
+    },
+    {
+      "url": "https://shop.example.com/about",
+      "desc": "статичний текст про компанію"
+    }
+  ]
+}
